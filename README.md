@@ -68,11 +68,9 @@ The NESP32's own two buttons are **Insert** (A) and **Delete** (B). Change
 
 ## Known issues
 
-- **NESradio: A may need pressing more than once.** The cartridge sends
-  PLAY and then, exactly one frame later, STOP, as if A were pressed again.
-  It sometimes takes 3 or 4 presses before a station plays. This happens
-  only with the script and bridge; the native Mesen version below plays on
-  the first press, so the fix is on our side. It is being looked into.
+- **Use A, not Turbo A.** In NESradio, A both tunes in and stops a
+  station, so Turbo A (Mesen's default keyboard binding is X; plain A is S)
+  plays and then stops it one frame later. Tap plain A.
 - **Online two-player games** (PEER) are not emulated yet.
 - **The Bluetooth keyboard** is not emulated yet.
 - **Save states and rewind** are not supported: the board's state lives in
