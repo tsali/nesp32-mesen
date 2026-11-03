@@ -48,6 +48,12 @@ another one on your network (then set `BRIDGE_HOST` at the top of
 
 ### 2. Mesen (once)
 
+Works best on [MesenCE](https://github.com/nesdev-org/MesenCE), which has
+`emu.getCpuCycleCount()`. Older Mesen 2 builds without it also work: the
+script falls back to `emu.getState()["cpu.cycleCount"]`, which is slower,
+so NESradio's sound may stutter there.
+
+
 - **Settings > Input**: set controller **port 2** to **None**. The script is port 2.
 - **Settings > Audio**: turn off the option that lowers the volume while
   Mesen is in the background, or NESradio will sound very quiet whenever

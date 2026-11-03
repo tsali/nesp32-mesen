@@ -25,6 +25,16 @@ local KEY_B = "Delete"
 
 local socket = require("socket.core")
 
+-- The CPU's cycle count. emu.getCpuCycleCount is in MesenCE and recent
+-- Mesen 2 builds; older ones only have it in emu.getState(), which is far
+-- slower (a copy of the whole state each call), so the radio may stutter there.
+local cycles
+if emu.getCpuCycleCount then
+  cycles = emu.getCpuCycleCount
+else
+  cycles = function() return emu.getState()["cpu.cycleCount"] end
+end
+
 local conn = nil
 local changes = {}        -- OUT0 changes since the last sync: cycle, level, cycle, level...
 local lastOut = 0
@@ -129,7 +139,7 @@ end
 
 -- $4016 write: OUT0 is bit 0
 local function onWrite(address, value)
-  local cycle = emu.getCpuCycleCount()
+  local cycle = cycles()
   local out = value & 1
   if out ~= lastOut then
     lastOut = out
@@ -140,7 +150,7 @@ end
 
 -- $4017 read: D0, inverted by the console's buffer, in bit 0
 local function onRead(address, value)
-  local cycle = emu.getCpuCycleCount()
+  local cycle = cycles()
   if cycle < lastCycle then
     resetLine(cycle)
   end
@@ -152,7 +162,7 @@ local function onRead(address, value)
 end
 
 local function onFrame()
-  local cycle = emu.getCpuCycleCount()
+  local cycle = cycles()
   if conn == nil then
     retryIn = retryIn - 1
     if retryIn <= 0 then
